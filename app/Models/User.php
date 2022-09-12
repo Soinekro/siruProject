@@ -12,17 +12,24 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ACTIVO = 'active';
+    const INACTIVO = 'inactive';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'father_lastname',
+        'mother_lastname',
+        'birthdate',
+        'dni',
+        'status',
     ];
-
+     protected $timestamp = false;
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -41,4 +48,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function enterprise()
+    {
+        return $this->belongsTo(Enterprise::class);
+    }
 }
