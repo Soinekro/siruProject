@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('api');
-    }
+
     public function register(Request $request)
     {
         try{
