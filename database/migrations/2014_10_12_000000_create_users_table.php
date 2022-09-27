@@ -16,15 +16,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('enterprise_id')->comment('llave foranea desde enterprises')->constrained('enterprises');
+            $table->enum('rol', [User::ADMIN, User::ENTERPRISE,User::EMPLOYE])->comment('Rol del usuario');
             $table->char('dni', 8)->unique()->comment('DNI del usuario');
             $table->string('name')->comment('Nombre del usuario');
-            $table->string('father_lastname')->comment('Apellido paterno del usuario');
-            $table->string('mother_lastname')->comment('Apellido materno del usuario');
-            $table->date('birthdate')->comment('Fecha de nacimiento del usuario');
+            $table->string('lastname')->comment('Apellido paterno del usuario');
             $table->string('email')->unique()->comment('Correo electrónico del usuario');
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('status', [User::ACTIVO, User::INACTIVO])->default(User::ACTIVO)->comment('Estado del usuario');
+            $table->string('password')->comment('contraseña de usuario');
             $table->rememberToken();
+            $table->enum('status', [User::ACTIVO, User::INACTIVO])->default(User::ACTIVO)->comment('Estado del usuario');
+            $table->boolean('password_status')->default(false)->comment('estado de generacion de contraseña');
             $table->timestamps();
         });
     }

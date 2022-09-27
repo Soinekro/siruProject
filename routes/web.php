@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Users\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/tokens', [AuthController::class,'tokens'])->name('home');

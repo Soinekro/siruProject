@@ -21,8 +21,4 @@ class Enterprise extends Authenticatable
         return $this->belongsTo(User::class);
     }
 
-    public function findForPassport($username)
-    {
-        return $this->where('ruc', $username)->first();
-    }
 }
