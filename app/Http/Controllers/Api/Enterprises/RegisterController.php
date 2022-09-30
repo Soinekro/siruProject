@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Enterprises;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EnterpriseResource;
 use App\Models\Enterprise;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,17 +18,20 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         try {
-            if (auth()->user()->user->is_admin() && auth()->user()->user->is_active()) {
+            $user = User::find(auth()->user()->id);
+            if ($user->is_admin() && $user->is_active()) {
                 $request->validate([
                     'name' => 'required|string',
+                    'social_reason' => 'required|string',
                     'ruc' => 'required|numeric|digits:11|unique:enterprises',
-                    'password' => 'required|string',
                     'user_sol' => 'required|string',
                     'password_sol' => 'required|string',
-                    'user_id' => 'required|numeric|unique:enterprises',
+                    'logo' => 'required|image',
+                    'certificate' => 'required|file',
+                    'certificate_password' => 'required|string',
+                    'distrit_id' => 'required|numeric|exists:distrits,id',
                 ]);
-                $request['password'] = Hash::make($request->password);
-                $enterprise = Enterprise::create($request->all());
+                $enterprise = Enterprise::create($request->except('_token'));
 
                 return response()->json([
                     'message' => 'enterprise created successfully',

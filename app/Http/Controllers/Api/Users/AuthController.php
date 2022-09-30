@@ -23,43 +23,42 @@ class AuthController extends Controller
     }
     public function register(Request $request)
     {
-        try{
-            $user = User::find(Auth::user()->id);
-        if ($user->is_admin() && $user->is_active()) {
-            $request->validate([
-                'name' => 'required|string',
-                'lastname' => 'required|string',
-                'dni' => 'required|numeric|digits:8|unique:users',
-                'email' => 'required|string|email|unique:users',
-                'enterprise_id' => 'required|numeric|exists:enterprises,id',
-                'rol' => 'required|string|in:admin,enterprise,employe',
-            ]);
-            $pass = fake()->password;;
-            $request->merge([
-                'password' => Hash::make($pass),
-                'status' => User::ACTIVO,
-            ]);
-            $user = User::create($request->except('_token'));
+        try {
+            $user = User::find(auth()->user()->id);
+            if ($user->is_admin() && $user->is_active()) {
+                $request->validate([
+                    'name' => 'required|string',
+                    'lastname' => 'required|string',
+                    'dni' => 'required|numeric|digits:8|unique:users',
+                    'email' => 'required|string|email|unique:users',
+                    'enterprise_id' => 'required|numeric|exists:enterprises,id',
+                    'rol' => 'required|string|in:admin,enterprise,employe',
+                ]);
+                $pass = fake()->password;;
+                $request->merge([
+                    'password' => Hash::make($pass),
+                    'status' => User::ACTIVO,
+                ]);
+                $user = User::create($request->except('_token'));
 
-            return response()->json([
-                'message' => 'Usuario registrado correctamente',
-                'user' => UserResource::make($user),
-                'password_default'=> $pass,
+                return response()->json([
+                    'message' => 'Usuario registrado correctamente',
+                    'user' => UserResource::make($user),
+                    'password_default' => $pass,
 
-            ], 201);
-        } else {
-            return response()->json([
-                'message' => 'no tiene autorizacion para realizar esta accion',
-                'user' => auth()->user()->user,
-            ], 401);
-        }
-        }catch(\Exception $e){
+                ], 201);
+            } else {
+                return response()->json([
+                    'message' => 'no tiene autorizacion para realizar esta accion',
+                    'user' => auth()->user()->user,
+                ], 401);
+            }
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al registrar usuario',
                 'error' => $e->getMessage(),
             ], 500);
         }
-
     }
 
     public function login(Request $request)
