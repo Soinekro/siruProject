@@ -16,10 +16,10 @@ class UserResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'father_lastname' => $this->father_lastname,
-            'mother_lastname' => $this->mother_lastname,
+            'lastname' => $this->lastname,
             'email' => $this->email,
             'rol' => $this->rol,
+            'enterprise' => EnterpriseResource::make($this->whenLoaded('enterprise')),
         ];
     }
 }

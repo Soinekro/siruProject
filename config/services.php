@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'siru' => [
+        'client_id' => env('SIRU_CLIENT_ID'),
+        'client_secret' => env('SIRU_CLIENT_SECRET'),
+    ],
+
 ];

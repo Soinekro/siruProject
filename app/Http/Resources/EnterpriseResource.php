@@ -20,7 +20,7 @@ class EnterpriseResource extends JsonResource
             'ruc' => $this->ruc,
             'user_sol' => $this->user_sol,
             'password_sol' => $this->password_sol,
-            'user' => UserResource::make($this->user),
+            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

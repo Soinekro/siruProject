@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,13 +12,17 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, ApiTrait;
 
     const ACTIVO = 'active';
     const INACTIVO = 'inactive';
     const ADMIN = 'admin';
     const ENTERPRISE = 'enterprise';
     const EMPLOYE = 'employe';
+
+    protected $allowIncluded = ['enterprise'];
+    protected $allowFilter = ['id', 'name', 'email', 'role'];
+    protected $allowSort = ['id', 'name', 'email', 'role'];
     /**
      * The attributes that are mass assignable.
      *
@@ -25,11 +31,13 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'enterprise_id',
+        'rol',
+        'dni',
+        'lastname',
         'email',
         'password',
-        'lastname',
-        'dni',
-        'rol',
+        'status',
     ];
      protected $timestamp = false;
     /**
@@ -70,4 +78,5 @@ class User extends Authenticatable
     {
         return $this->where('dni', $username)->first();
     }
+
 }
