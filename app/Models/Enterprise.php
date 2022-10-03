@@ -19,12 +19,12 @@ class Enterprise extends Authenticatable
         'created_at',
         'updated_at',
     ];
-    protected $allowIncluded = ['user'];
-    protected $allowFilter = ['id', 'name', 'social_reason', 'ruc', 'address', 'phone', 'email', 'user_id'];
-    protected $allowSort = ['id', 'name', 'social_reason', 'ruc', 'address', 'phone', 'email', 'user_id'];
+    protected $allowIncluded = ['users'];
+    protected $allowFilter = ['id', 'name', 'social_reason', 'ruc', 'address', 'phone', 'email'];
+    protected $allowSort = ['id', 'name', 'social_reason', 'ruc', 'address', 'phone', 'email'];
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class);
     }
 }

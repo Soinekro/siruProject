@@ -13,7 +13,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, ApiTrait;
-
+    //protected $table = 'user_siru';
     const ACTIVO = 'active';
     const INACTIVO = 'inactive';
     const ADMIN = 'admin';
@@ -79,4 +79,8 @@ class User extends Authenticatable
         return $this->where('dni', $username)->first();
     }
 
+    public function tokens()
+    {
+        return $this->hasMany(OauthAccessTokens::class);
+    }
 }

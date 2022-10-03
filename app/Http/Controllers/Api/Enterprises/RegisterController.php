@@ -34,17 +34,17 @@ class RegisterController extends Controller
                 $enterprise = Enterprise::create($request->except('_token'));
 
                 return response()->json([
-                    'message' => 'enterprise created successfully',
+                    'message' => 'empresa creada satisfactoriamente',
                     'enterprise' => EnterpriseResource::make($enterprise),
                 ], 201);
             }
             return response()->json([
-                'message' => 'You are not authorized to register enterprises',
+                'message' => 'usted no tiene autorizacion para realizar esta accion',
                 'user' => auth()->user()->user,
             ], 401);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error creating enterprise',
+                'message' => 'Error al registrar empresa',
                 'error' => $e->getMessage(),
             ], 500);
         }

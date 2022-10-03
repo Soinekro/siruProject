@@ -64,6 +64,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
+            return $request->all();
             $request->validate([
                 'dni' => 'required|string',
                 'password' => 'required|string',
@@ -72,17 +73,17 @@ class AuthController extends Controller
             $user = User::where('dni', $request->dni)->firstOrFail();
 
             if (Hash::check($request->password, $user->password)) {
-                $token = $this->getAccessToken();
+                $token = (!$user->tokens) ? $this->getAccessToken() : null;
                 return response()->json([
-                    'message' => 'User logged in successfully',
-                    'data' => UserResource::make($user),
+                    'message' => 'Usuario logueado correctamente',
+                    'user' => UserResource::make($user),
                     'access_token' => $token['access_token'],
                     'refresh_token' => $token['refresh_token'],
                 ], 200);
             } else {
                 return response()->json([
                     'message' => 'Error en logging',
-                    'error' => 'Incorrect password',
+                    'error' => 'usuario o contraseña incorrectos',
                 ], 401);
             }
         } catch (Exception $e) {
