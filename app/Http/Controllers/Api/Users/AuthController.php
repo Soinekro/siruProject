@@ -63,35 +63,33 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        try {
-            return $request->all();
-            $request->validate([
-                'dni' => 'required|string',
-                'password' => 'required|string',
-            ]);
+        //return $request->all();
+        $request->validate([
+            'dni' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-            $user = User::where('dni', $request->dni)->firstOrFail();
-
-            if (Hash::check($request->password, $user->password)) {
-                $token = (!$user->tokens) ? $this->getAccessToken() : null;
+        $user = User::where('dni', $request->dni)->firstOrFail();
+        if (Hash::check($request->password, $user->password)) {
+            $token = ($user->tokens()->count() > 0) ?  null : $this->getAccessToken();
+            if ($token !=null) {
                 return response()->json([
                     'message' => 'Usuario logueado correctamente',
                     'user' => UserResource::make($user),
                     'access_token' => $token['access_token'],
                     'refresh_token' => $token['refresh_token'],
                 ], 200);
-            } else {
+            }else{
                 return response()->json([
-                    'message' => 'Error en logging',
-                    'error' => 'usuario o contraseña incorrectos',
-                ], 401);
+                    'message' => 'El usuario ya tiene un token activo',
+                    'user' => UserResource::make($user),
+                ], 203);
             }
-        } catch (Exception $e) {
-            //throw $th;
+        } else {
             return response()->json([
-                'message' => 'las credenciales no son correctas',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'Error en logging',
+                'error' => 'usuario o contraseña incorrectos',
+            ], 401);
         }
     }
 
