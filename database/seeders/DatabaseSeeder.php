@@ -14,13 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            DepartmentSeeder::class,
-            ProvinceSeeder::class,
-            DistritSeeder::class,
-            District2Seeder::class,
-        ]);
-        \App\Models\Enterprise::factory(20)->create();
+        //\App\Models\Enterprise::factory(20)->create();
         \App\Models\User::factory(100)->create();
     }
 }

@@ -992,7 +992,7 @@ class ProvinceSeeder extends Seeder
         ]);
         Province::create([
             'name' => 'Purus',
-            'code_ubg' => '01',
+            'code_ubg' => '04',
             'department_id' => 25,
         ]);
 
