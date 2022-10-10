@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'lastname' => $this->lastname,
             'email' => $this->email,
-            'rol' => $this->rol,
+            'role' => $this->rol,
             'enterprise' => EnterpriseResource::make($this->whenLoaded('enterprise')),
         ];
     }

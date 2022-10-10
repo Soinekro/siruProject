@@ -13,7 +13,6 @@ use App\Models\User;
 use App\Traits\Token;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
@@ -66,7 +65,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        return User::with('enterprise')->get();
         $request->validate([
             'dni' => 'required|string',
             'password' => 'required|string',
@@ -74,16 +72,15 @@ class AuthController extends Controller
 
         $user = User::where('dni', $request->dni)->firstOrFail();
         if (Hash::check($request->password, $user->password)) {
-            return "xdsdas";
             $token = ($user->tokens()->count() > 0) ?  null : $this->getAccessToken();
-            if ($token !=null) {
+            if ($token != null) {
                 return response()->json([
                     'message' => 'Usuario logueado correctamente',
                     'user' => UserResource::make($user),
                     'access_token' => $token['access_token'],
                     'refresh_token' => $token['refresh_token'],
                 ], 200);
-            }else{
+            } else {
                 return response()->json([
                     'message' => 'El usuario ya tiene un token activo',
                     'user' => UserResource::make($user),
