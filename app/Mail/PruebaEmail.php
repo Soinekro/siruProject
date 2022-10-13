@@ -31,6 +31,6 @@ class PruebaEmail extends Mailable
         return $this->view('view.name');
     }
     public function espacio(){
-        return('welcome.blade');//boorar esta funcion
+        return $this->view('emails.changepass');//probando esta funcion
     }
 }
