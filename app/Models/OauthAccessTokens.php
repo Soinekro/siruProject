@@ -15,4 +15,18 @@ class OauthAccessTokens extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    public function ScopeActive($query)
+    {
+        return $query->where('revoked', 0);
+    }
+
+    public function ScopeUser($query, $user_id)
+    {
+        return $query->where('user_id', $user_id);
+    }
+
+    public function ScopeNotExpired($query)
+    {
+        return $query->where('expires_at', '>', now());
+    }
 }

@@ -19,6 +19,9 @@ class User extends Authenticatable
     const ADMIN = 2;
     const USER = 3;
 
+    const PASS_DEFAULT = 0;
+    const PASS_CHANGED = 1;
+
     protected $table = 'user_siru';
     protected $allowIncluded = ['enterprise'];
     protected $allowFilter = ['id', 'name', 'email', 'role'];

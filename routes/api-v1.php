@@ -26,6 +26,7 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('recoverPass', 'recoverPassword');
 });
 Route::post('enterprise/register', [EnterprisesRegisterController::class, 'register'])->name('api-v1.enterprise.register');
 Route::controller(UserController::class)->prefix('users')->group(function () {//<--- ruta ejemplo

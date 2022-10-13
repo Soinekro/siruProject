@@ -20,13 +20,16 @@ trait Token{
         return $response->json();
     }
 
-    public function generatePassword(){
-        $characters = '$%&$@)(0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $password = '';
-        for ($i = 0; $i < 8; $i++) {
-            $password .= $characters[rand(0, strlen($characters) - 1)];
-        }
+    public function resolveAuthorization(){
+        $response = Http::withHeaders([
+            'Accept'=>'aplication/json',
+        ])->post('http://api.codersfree.test/oauth/token',[
+            'grant_type'=>'refresh_token',
+            'refresh_token'=>request('refresh_token'),
+            'client_id' => config('services.siru.client_id'),
+            'client_secret' => config('services.siru.client_secret'),
+        ]);
 
-        return $password;
+        return $response->json();
     }
 }
