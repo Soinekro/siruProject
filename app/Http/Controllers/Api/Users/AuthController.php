@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EnterpriseResource;
 use App\Http\Resources\UserResource;
+use App\Models\Department;
+use App\Models\Distrit;
 use App\Models\Enterprise;
+use App\Models\Province;
 use App\Models\User;
 use App\Traits\Token;
 use Exception;
@@ -63,7 +66,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        //return $request->all();
+        return User::with('enterprise')->get();
         $request->validate([
             'dni' => 'required|string',
             'password' => 'required|string',
@@ -71,6 +74,7 @@ class AuthController extends Controller
 
         $user = User::where('dni', $request->dni)->firstOrFail();
         if (Hash::check($request->password, $user->password)) {
+            return "xdsdas";
             $token = ($user->tokens()->count() > 0) ?  null : $this->getAccessToken();
             if ($token !=null) {
                 return response()->json([

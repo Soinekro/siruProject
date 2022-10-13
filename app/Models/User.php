@@ -13,16 +13,18 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, ApiTrait;
-    //protected $table = 'user_siru';
-    const ACTIVO = 'active';
-    const INACTIVO = 'inactive';
-    const ADMIN = 'admin';
-    const ENTERPRISE = 'enterprise';
-    const EMPLOYE = 'employe';
+    const ACTIVO = 1;
+    const INACTIVO = 0;
+    const SUPER_ADMIN = 1;
+    const ADMIN = 2;
+    const USER = 3;
 
+    protected $table = 'user_siru';
     protected $allowIncluded = ['enterprise'];
     protected $allowFilter = ['id', 'name', 'email', 'role'];
     protected $allowSort = ['id', 'name', 'email', 'role'];
+
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
@@ -30,14 +32,18 @@ class User extends Authenticatable
      */
 
     protected $fillable = [
-        'name',
         'enterprise_id',
-        'rol',
-        'dni',
+        'role',
+        'name',
         'lastname',
         'email',
+        'dni',
         'password',
+        'telephone',
+        'ruc_personal',
         'status',
+        'email_verified',
+        'pass_status'
     ];
      protected $timestamp = false;
     /**
@@ -47,7 +53,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -61,7 +66,7 @@ class User extends Authenticatable
 
     public function enterprise()
     {
-        return $this->hasOne(Enterprise::class);
+        return $this->belongsTo(Enterprise::class);
     }
 
     public function is_admin()

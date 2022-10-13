@@ -35,9 +35,8 @@ Route::controller(UserController::class)->prefix('users')->group(function () {//
     Route::put('update/{id}', 'update');
     Route::delete('delete/{id}', 'delete'); */
 });
-//Si quieres me dejas eso a mi y sigues avanzando en lo del token(?)
-//no funciona con la instancia?
 
+/* ESTARE EN REUNIONNNNNNNNNNN */
 Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
     Route::get('departamentos', 'departmenst'); //esta en español
     Route::get('provinces/{id}','provinces');  //esta en ingles D:
@@ -45,3 +44,4 @@ Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
 });
 //Route::get('register', [RegisterController::class, 'register'])->name('api-v1.users.register');
 //
+

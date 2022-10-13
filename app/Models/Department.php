@@ -9,6 +9,10 @@ class Department extends Model
 {
     use HasFactory;
 
+    protected $table = 'department';
+    public $timestamps = false;
+    protected $keyType = 'string';
+
     public function provinces()
     {
         return $this->hasMany(Province::class);

@@ -23,16 +23,16 @@ class UserFactory extends Factory
     {
         return [
             'enterprise_id'=>Enterprise::all()->unique()->random()->id,
-            'rol' => $this->faker->randomElement([User::ADMIN, User::ENTERPRISE,User::EMPLOYE]),
+            'role' => $this->faker->randomElement([User::SUPER_ADMIN, User::ADMIN,User::USER]),
             'dni' => $this->faker->unique()->numerify('########'),
             'name' => $this->faker->name(),
             'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'password'=> Hash::make('12345678'),
             'status' => $this->faker->randomElement([User::ACTIVO, User::INACTIVO]),
-            'password_status' => $this->faker->randomElement([true,false]),
-            'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+            'pass_status' => $this->faker->randomElement([true,false]),
+            'email_verified' => $this->faker->randomElement([1,0]),
+            //'remember_token' => Str::random(10),
         ];
     }
 

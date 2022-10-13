@@ -14,10 +14,10 @@ class Enterprise extends Authenticatable
     use HasApiTokens;
     use ApiTrait;
 
+    protected $table = 'enterprise';
+    public $timestamps = false;
     protected $guarded = [
         'id',
-        'created_at',
-        'updated_at',
     ];
     protected $allowIncluded = ['users'];
     protected $allowFilter = ['id', 'name', 'social_reason', 'ruc', 'address', 'phone', 'email'];
