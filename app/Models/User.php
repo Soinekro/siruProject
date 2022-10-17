@@ -15,9 +15,9 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable, ApiTrait;
     const ACTIVO = 1;
     const INACTIVO = 0;
-    const SUPER_ADMIN = 1;
-    const ADMIN = 2;
-    const USER = 3;
+    const SUPER_ADMIN = 'Super Administrador';
+    const ADMIN = 'Administrador';
+    const USER = 'Usuario';
 
     const PASS_DEFAULT = 0;
     const PASS_CHANGED = 1;
@@ -74,7 +74,7 @@ class User extends Authenticatable
 
     public function is_admin()
     {
-        return $this->rol == self::ADMIN;
+        return $this->role == self::SUPER_ADMIN;
     }
 
     public function is_active()
@@ -90,5 +90,10 @@ class User extends Authenticatable
     public function tokens()
     {
         return $this->hasMany(OauthAccessTokens::class);
+    }
+
+    public function name_complete()
+    {
+        return $this->name . ' ' . $this->lastname;
     }
 }

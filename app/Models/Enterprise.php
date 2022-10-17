@@ -6,9 +6,8 @@ use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Enterprise extends Authenticatable
+class Enterprise extends Model
 {
     use HasFactory;
     use HasApiTokens;

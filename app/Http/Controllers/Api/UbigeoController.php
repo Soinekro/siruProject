@@ -12,7 +12,7 @@ class UbigeoController extends Controller
 {
     public function departmenst()
     {
-        $departments = Department::all();
+        $departments = Department::select('name','id')->get();
         return response()->json([
             'message' => 'listado de departamentos',
             'departments'=>$departments,
@@ -20,14 +20,16 @@ class UbigeoController extends Controller
     }
 
     public function provinces($id){
-        $provinces = Province::where('department_id',$id)->get();
+        //$id 2 digitos
+        $provinces = Province::where('department_id',$id)->select('name','id')->get();
         return response()->json([
             'message' => 'listado de provincias',
             'provincias' => $provinces,
         ]);
     }
     public function distrits($id){
-        $distrits = Distrit::where('province_id', $id)->get();
+        //$id 4 digitos
+        $distrits = Distrit::where('province_id', $id)->select('name','id')->get();
         //Acuerdate de borrar las carpetas (Department,Distrit,Province) y el controlador
         return response()->json([
             'message' => 'Listado de distritos',

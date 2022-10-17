@@ -23,16 +23,17 @@ class RegisterController extends Controller
                 $request->validate([
                     'name' => 'required|string',
                     'social_reason' => 'required|string',
-                    'ruc' => 'required|numeric|digits:11|unique:enterprises',
+                    'ruc' => 'required|numeric|digits:11|unique:enterprise',
                     'user_sol' => 'required|string',
                     'password_sol' => 'required|string',
                     'logo' => 'required|image',
                     'certificate' => 'required|file',
                     'certificate_password' => 'required|string',
-                    'distrit_id' => 'required|numeric|exists:distrits,id',
+                    'distrit_id' => 'required|numeric|digits:6|exists:district,id',
                 ]);
+                $request->file('logo')->storeAs('public/enterprises/' . $request->ruc, 'logo.png');
+                $request->file('certificate')->storeAs('enterprises/' . $request->ruc, 'certificate.pfx');
                 $enterprise = Enterprise::create($request->except('_token'));
-
                 return response()->json([
                     'message' => 'empresa creada satisfactoriamente',
                     'enterprise' => EnterpriseResource::make($enterprise),

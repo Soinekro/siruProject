@@ -1,8 +1,7 @@
 <html>
     <body>
-        <h1>solicitaste tu cambio de contraseña</h1>
-        usuario : {{ $user->name }}
-        email : {{ $user->email }}
-        nueva contraseña : {{ $password }}
+        <h1>Correo Electronico para contraseña Generada</h1>
+        usuario : {{ $user->name_complete() }}
+        contraseña Generada : {{ $password }}
     </body>
 </html>

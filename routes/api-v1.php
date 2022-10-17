@@ -23,14 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::post('login', 'login');
-    Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('changePass', 'changePassword');
     Route::post('recoverPass', 'recoverPassword');
 });
 Route::post('enterprise/register', [EnterprisesRegisterController::class, 'register'])->name('api-v1.enterprise.register');
-Route::controller(UserController::class)->prefix('users')->group(function () {//<--- ruta ejemplo
+Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('/', 'index');
+    Route::post('register', 'register');
     /* Route::get('show/{id}', 'show');
     Route::post('store', 'store');
     Route::put('update/{id}', 'update');
@@ -40,8 +41,8 @@ Route::controller(UserController::class)->prefix('users')->group(function () {//
 /* ESTARE EN REUNIONNNNNNNNNNN */
 Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
     Route::get('departamentos', 'departmenst'); //esta en español
-    Route::get('provinces/{id}','provinces');  //esta en ingles D:
-    Route::get('distrito/{id}','distrits');
+    Route::get('provincias/{id}','provinces');  //esta en español
+    Route::get('distritos/{id}','distrits');
 });
 //Route::get('register', [RegisterController::class, 'register'])->name('api-v1.users.register');
 //
