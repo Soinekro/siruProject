@@ -4,8 +4,10 @@ use App\Http\Controllers\Api\Enterprises\EnterpriseController;
 use App\Http\Controllers\Api\UbigeoController;
 use App\Http\Controllers\Api\Users\AuthController;
 use App\Http\Controllers\Api\Users\UserController;
+use App\Mail\PruebaEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +53,9 @@ Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
 });
 //Route::get('register', [RegisterController::class, 'register'])->name('api-v1.users.register');
 //
+Route::get('/new-password', function(){
+    $emailcv='email_de_prueba@correo.com';
+    Mail::to($emailcv)->send(new PruebaEmail());
 
+    return 'Cambio de contraseña enviado';
+});
