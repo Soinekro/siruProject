@@ -28,15 +28,15 @@ class UserController extends Controller
     public function register(Request $request)
     {
         try {
-            return auth()->user();
+            //return auth()->user();
             $user = User::findOrFail(auth()->user()->id);
             if ($user->is_admin() && $user->is_active()) {
                 $request->validate([
                     'name' => 'required|string',
                     'lastname' => 'required|string',
-                    'dni' => 'required|numeric|digits:8|unique:users',
-                    'email' => 'required|string|email|unique:users',
-                    'enterprise_id' => 'required|numeric|exists:enterprises,id',
+                    'dni' => 'required|numeric|digits:8|unique:user_siru',
+                    'email' => 'required|string|email|unique:user_siru',
+                    'enterprise_id' => 'required|numeric|exists:enterprise,id',
                     'role' => 'required',
                 ]);
                 $pass = fake()->password;//genera una contraseña aleatoria

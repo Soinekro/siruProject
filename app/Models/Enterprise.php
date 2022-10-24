@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Traits\ApiTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Passport\HasApiTokens;
 
 class Enterprise extends Model
 {
     use HasFactory;
-    use HasApiTokens;
     use ApiTrait;
 
     protected $table = 'enterprise';
@@ -24,6 +22,6 @@ class Enterprise extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class,'enterprise_id','id');
     }
 }

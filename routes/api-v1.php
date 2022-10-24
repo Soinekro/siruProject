@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Enterprises\RegisterController as EnterprisesRegisterController;
+use App\Http\Controllers\Api\Enterprises\EnterpriseController;
 use App\Http\Controllers\Api\UbigeoController;
 use App\Http\Controllers\Api\Users\AuthController;
 use App\Http\Controllers\Api\Users\UserController;
@@ -28,7 +28,12 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
     Route::post('changePass', 'changePassword');
     Route::post('recoverPass', 'recoverPassword');
 });
-Route::post('enterprise/register', [EnterprisesRegisterController::class, 'register'])->name('api-v1.enterprise.register');
+Route::controller(EnterpriseController::class)->prefix('enterprises')->group(function () {
+    Route::get('/', 'list');
+    Route::post('register', 'register');
+    Route::put('{enterprise}', 'update');
+});
+
 Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::get('/', 'index');
     Route::post('register', 'register');

@@ -15,12 +15,12 @@ class EnterpriseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
             'ruc' => $this->ruc,
+            'social_reason' => $this->social_reason,
+            'address' => $this->address,
             'user_sol' => $this->user_sol,
-            'password_sol' => $this->password_sol,
-            'user' => UserResource::make($this->whenLoaded('user')),
+            'certificate_pass' => $this->certificate_pass,
+            'users' => UserResource::collection($this->whenLoaded('users')),
         ];
     }
 }
