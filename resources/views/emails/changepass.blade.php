@@ -40,17 +40,16 @@ Equipo de SiruProject
                                 </td>
                             </tr>
                         </tbody>
-                    </table> 
+                    </table>
 <center style="width: 100%; background-color: #f5f6fa;">
 <h1>Cambio de contraseña</h1>
 <p><h4>Estimado/a usuario/a:</h4>
 
-Hemos recibido una notificación de cambio de contraseña, para completar el proceso de cambio te pedimos ingresar con la siguiente contraseña temporal:</p>
-   <div style="text-align:center; background-color:#ccc; padding: 10px 50px 10px;"><p>HASHASHAS</p></div> 
-<p>Link : https://google.com/changepass</p>
+Hemos recibido una notificación de cambio de contraseña, para completar el proceso de cambio te pedimos ingresar con la siguiente contraseña</p>
+   <div style="text-align:center; background-color:#ccc; padding: 10px 50px 10px;">{{ $password }}</div>
 
 <p style="font-weight:bold;">*Recuerda que al ingresar, se te solicitará cambiar tu contraseña nuevamente*</p>
-<p>¡Muchas gracias, [Nombre de cliente]!<br>
+<p>¡Muchas gracias, {{ $user->name_complete() }}!<br>
 
 Atentamente,
 Equipo de SiruProjectt</p>
