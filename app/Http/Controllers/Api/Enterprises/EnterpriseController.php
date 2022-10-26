@@ -13,7 +13,7 @@ class EnterpriseController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api', 'superadmin'])->only('register', 'list','update');
+        $this->middleware(['auth:api', 'superadmin']);
     }
 
     public function list()
@@ -26,7 +26,6 @@ class EnterpriseController extends Controller
     }
     public function register(Request $request)
     {
-        try {
             $user = User::find(auth()->user()->id);
             if ($user->is_admin() && $user->is_active()) {
                 $request->validate([
@@ -61,18 +60,11 @@ class EnterpriseController extends Controller
                 'message' => 'usted no tiene autorizacion para realizar esta accion',
                 'user' => auth()->user()->user,
             ], 401);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error al registrar empresa',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
     }
-    public function update(Request $request, $enterprise)
+    public function update(Request $request,$ruc)
     {
-        try {
             //return Enterprise::all();
-            $enterprise = Enterprise::findOrFail($enterprise);
+            $enterprise = Enterprise::where('ruc',$ruc)->first();
             $user = User::find(auth()->user()->id);
             if ($user->is_admin() && $user->is_active()) {
                 $request->validate([
@@ -111,11 +103,30 @@ class EnterpriseController extends Controller
                 'message' => 'usted no tiene autorizacion para realizar esta accion',
                 'user' => auth()->user()->user,
             ], 401);
-        } catch (\Exception $e) {
+    }
+
+    public function delete($ruc){
+        return $ruc;
+    }
+    public function revoke($ruc)
+    {
+        $enterprise = Enterprise::where('ruc', $ruc)->first();
+        $user = User::find(auth()->user()->id);
+        return $user->enterprise;
+        if ($user->is_admin() && $user->is_active()) {
+            foreach ($enterprise->users as $user) {
+                $user->update([
+                    'status' => 0,
+                ]);
+            }
             return response()->json([
-                'message' => 'Error al registrar empresa',
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'empresa revocada satisfactoriamente',
+                'enterprise' => EnterpriseResource::make($enterprise),
+            ], 201);
         }
+        return response()->json([
+            'message' => 'usted no tiene autorizacion para realizar esta accion',
+            'user' => auth()->user()->user,
+        ], 401);
     }
 }

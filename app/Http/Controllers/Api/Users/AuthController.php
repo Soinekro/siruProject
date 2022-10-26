@@ -31,6 +31,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        //return User::all();
         $request->validate([
             'dni' => 'required|string',
             'password' => 'required|string',

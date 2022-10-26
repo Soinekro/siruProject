@@ -33,7 +33,9 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
 Route::controller(EnterpriseController::class)->prefix('enterprises')->group(function () {
     Route::get('/', 'list');
     Route::post('register', 'register');
-    Route::put('{enterprise}', 'update');
+    Route::put('{ruc}', 'update');
+    Route::delete('{ruc}', 'delete');
+    Route::post('revoke/{ruc}', 'revoke');
 });
 
 Route::controller(UserController::class)->prefix('users')->group(function () {
