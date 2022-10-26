@@ -25,8 +25,4 @@ class Enterprise extends Model
         return $this->hasMany(User::class,'enterprise_id','id');
     }
 
-    public function getRouteKeyName()
-    {
-        return 'ruc';
-    }
 }
