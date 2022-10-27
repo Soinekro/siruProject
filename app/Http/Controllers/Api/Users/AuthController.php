@@ -3,22 +3,13 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\EnterpriseResource;
 use App\Http\Resources\UserResource;
 use App\Mail\ResetPasswordEmail;
-use App\Models\Department;
-use App\Models\Distrit;
-use App\Models\Enterprise;
-use App\Models\OauthAccessTokens;
-use App\Models\Province;
 use App\Models\User;
 use App\Traits\Token;
-use Exception;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -31,7 +22,6 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        //return User::all();
         $request->validate([
             'dni' => 'required|string',
             'password' => 'required|string',
