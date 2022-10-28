@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         $user = User::where('dni', $request->dni)->firstOrFail(); //verificamos si el usuario existe
         if (Hash::check($request->password, $user->password) && $user->is_active()) { //verificamos si la contraseña es correcta
-            $token = ($user->tokens()->where('revoked',0)->count() > 0) ?  null : $this->getAccessToken(); //verificamos si el usuario tiene un token activo
+            $token = $this->getAccessToken(); //verificamos si el usuario tiene un token activo
             if ($token != null) { //si el token es diferente de null es porque el usuario no tiene un token activo
             DB::select("CALL spLoginUser($user->id)"); //llamada a procedimiento almacenado para registrar el login del usuario
                 return response()->json([
