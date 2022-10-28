@@ -35,8 +35,7 @@ class AuthController extends Controller
                 return response()->json([
                     'message' => 'Usuario logueado correctamente',
                     'user' => UserResource::make($user),
-                    'access_token' => $token['access_token'],
-                    'refresh_token' => $token['refresh_token'],
+                    'token' => $token,
                 ], 200);
             } else {
                 return response()->json([
