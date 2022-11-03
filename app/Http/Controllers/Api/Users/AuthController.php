@@ -29,9 +29,9 @@ class AuthController extends Controller
 
         $user = User::where('dni', $request->dni)->firstOrFail(); //verificamos si el usuario existe
         if (Hash::check($request->password, $user->password) && $user->is_active()) { //verificamos si la contraseña es correcta
-            $token = $this->getAccessToken(); //verificamos si el usuario tiene un token activo
+            $token = ($user->tokens()->where('revoked',0)->count() > 0) ?  null : $this->getAccessToken(); //verificamos si el usuario tiene un token activo
             if ($token != null) { //si el token es diferente de null es porque el usuario no tiene un token activo
-            DB::select("CALL spLoginUser($user->id)"); //llamada a procedimiento almacenado para registrar el login del usuario
+            //DB::select("CALL spLoginUser($user->id)"); //llamada a procedimiento almacenado para registrar el login del usuario
                 return response()->json([
                     'message' => 'Usuario logueado correctamente',
                     'user' => UserResource::make($user),
@@ -99,6 +99,13 @@ class AuthController extends Controller
         $pass = fake()->password;
         $passwordhash = Hash::make($pass);
         DB::select("CALL spUpdatePass('$user->dni','$passwordhash')");
+        /* $user->password = $passwordhash;
+        $user->save(); */
+        foreach($user->tokens->where('revoked',0) as $token){
+            $token->update([
+                'revoked' => true,
+            ]);
+        }
         //metodo de envio de email.
         Mail::to($user->email)->send(new ResetPasswordEmail($user, $pass));
         //fin de metodo envio de email

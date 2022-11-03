@@ -9,6 +9,7 @@ trait Token{
     public function getAccessToken(){
         $response = Http::withHeaders([
             'Accept'=>'aplication/json',
+        //])->post('http://siru.test/oauth/token',[
         ])->post('https://facturacion.sirusoluciones.com/oauth/token',[
             'grant_type'=>'password',
             'client_id' => config('services.siru.client_id'),
@@ -23,6 +24,7 @@ trait Token{
     public function resolveAuthorization(){
         $response = Http::withHeaders([
             'Accept'=>'aplication/json',
+        //])->post('http://siru.test/oauth/token',[
         ])->post('https://facturacion.sirusoluciones.com/oauth/token',[
             'grant_type'=>'refresh_token',
             'refresh_token'=>request('refresh_token'),

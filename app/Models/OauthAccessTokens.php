@@ -15,6 +15,15 @@ class OauthAccessTokens extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    protected $fillable = [
+        'id',
+        'user_id',
+        'client_id',
+        'name',
+        'scopes',
+        'revoked',
+        'expires_at',
+    ];
     public function ScopeActive($query)
     {
         return $query->where('revoked', 0);
