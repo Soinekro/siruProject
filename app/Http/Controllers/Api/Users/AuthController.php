@@ -17,9 +17,23 @@ class AuthController extends Controller
     use Token;
     public function __construct()
     {
-        $this->middleware('auth:api')->except('login','recoverPassword');
+        $this->middleware('auth:api')->except('login', 'recoverPassword');
     }
 
+    public function refresh(Request $request)
+    {
+        $response = $this->resolveAuthorization();
+        if (isset($response['error'])) {
+            return response()->json([
+                'message' => $response['message'],
+            ], 401);
+        }
+        return response()->json([
+            'message' => 'sesion renovada',
+            'access_token' => $response['access_token'],
+            'refresh_token' => $response['refresh_token'],
+        ], 200);
+    }
     public function login(Request $request)
     {
         $request->validate([
@@ -31,7 +45,7 @@ class AuthController extends Controller
         if (Hash::check($request->password, $user->password) && $user->is_active()) { //verificamos si la contraseña es correcta
             $token = ($user->tokens()->where('revoked',0)->count() > 0) ?  null : $this->getAccessToken(); //verificamos si el usuario tiene un token activo
             if ($token != null) { //si el token es diferente de null es porque el usuario no tiene un token activo
-            //DB::select("CALL spLoginUser($user->id)"); //llamada a procedimiento almacenado para registrar el login del usuario
+                DB::select("CALL spLoginUser($user->id)"); //llamada a procedimiento almacenado para registrar el login del usuario
                 return response()->json([
                     'message' => 'Usuario logueado correctamente',
                     'user' => UserResource::make($user),
@@ -53,32 +67,24 @@ class AuthController extends Controller
 
     public function logout()
     {
-        try {
-            auth()->user();
-            return response()->json([
-                'message' => 'Usuario deslogueado correctamente',
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error al desloguear usuario',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        $user = User::findorFail(auth()->user()->id);
+        $user->tokens()->where('revoked', 0)->update(['revoked' => 1]);
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'sesion cerrada',
         ], 200);
     }
 
     public function changePassword(Request $request)
     {
         $request->validate([
-            'password' => 'required|string',
-            'new_password' => 'required|string]confirmed',
+            'old_password' => 'required|string',
+            'password' => 'required|string|confirmed',
         ]);
         $user = User::findOrFail(auth()->user()->id);
-        if (Hash::check($request->password, $user->password) && $request->password != $request->new_password && $user->is_active()) {
-            $user->password = Hash::make($request->new_password);
-            $user->save();
+        $pass = Hash::make($request->password);
+        Mail::to($user->email)->send(new ResetPasswordEmail($user, $request->password));
+        if (Hash::check($request->old_password, $user->password) && $user->is_active()) {
+            DB::select("CALL spUpdatePass('$user->dni','$pass')");
             return response()->json([
                 'message' => 'Contraseña cambiada correctamente',
                 'user' => UserResource::make($user),
@@ -99,9 +105,7 @@ class AuthController extends Controller
         $pass = fake()->password;
         $passwordhash = Hash::make($pass);
         DB::select("CALL spUpdatePass('$user->dni','$passwordhash')");
-        /* $user->password = $passwordhash;
-        $user->save(); */
-        foreach($user->tokens->where('revoked',0) as $token){
+        foreach ($user->tokens->where('revoked', 0) as $token) {
             $token->update([
                 'revoked' => true,
             ]);
