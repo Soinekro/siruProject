@@ -17,12 +17,13 @@ class UserController extends Controller
     }
     public function index()
     {
-        $user = auth()->user()->tokens;
-        $users = User::with('tokens')->get();
-        $tokens = OauthAccessTokens::all();
+        $users = User::included()
+            ->filter()
+            ->sort()
+            ->getOrpaginate();
         return response()->json([
             'message' => 'Hello World',
-            'user' => $user,
+            'users' => $users,
         ]);
     }
     public function register(Request $request)

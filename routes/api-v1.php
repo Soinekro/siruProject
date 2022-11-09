@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\Enterprises\EnterpriseController;
 use App\Http\Controllers\Api\UbigeoController;
 use App\Http\Controllers\Api\Users\AuthController;
@@ -47,12 +48,12 @@ Route::controller(UserController::class)->prefix('users')->group(function () {
     Route::delete('delete/{id}', 'delete'); */
 });
 
-/* ESTARE EN REUNIONNNNNNNNNNN */
 Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
     Route::get('departamentos', 'departmenst'); //esta en español
     Route::get('provincias/{id}','provinces');  //esta en español
     Route::get('distritos/{id}','distrits');
 });
+Route::apiResource('categories', CategoryController::class);
 //Route::get('register', [RegisterController::class, 'register'])->name('api-v1.users.register');
 //
 Route::get('/new-password', function(){

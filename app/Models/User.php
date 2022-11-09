@@ -23,9 +23,9 @@ class User extends Authenticatable
     const PASS_CHANGED = 1;
 
     protected $table = 'user_siru';
-    protected $allowIncluded = ['enterprise'];
-    protected $allowFilter = ['id', 'name', 'email', 'role'];
-    protected $allowSort = ['id', 'name', 'email', 'role'];
+    protected $allowIncluded = ['enterprise','tokens'];
+    protected $allowFilter = ['id', 'name', 'email', 'role','dni'];
+    protected $allowSort = ['id', 'name', 'email', 'role','dni'];
 
     public $timestamps = false;
     /**

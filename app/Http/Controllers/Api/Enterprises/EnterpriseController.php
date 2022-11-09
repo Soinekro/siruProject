@@ -106,7 +106,19 @@ class EnterpriseController extends Controller
     }
 
     public function delete($ruc){
-        return $ruc;
+        $enterprise = Enterprise::where('ruc',$ruc)->first();
+        $user = User::find(auth()->user()->id);
+        if ($user->is_admin() && $user->is_active()) {
+            $enterprise->delete();
+            return response()->json([
+                'message' => 'empresa eliminada satisfactoriamente',
+                'enterprise' => EnterpriseResource::make($enterprise),
+            ], 201);
+        }
+        return response()->json([
+            'message' => 'usted no tiene autorizacion para realizar esta accion',
+            'user' => auth()->user()->user,
+        ], 401);
     }
     public function revoke($ruc)
     {
