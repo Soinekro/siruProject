@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\Enterprises\EnterpriseController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UbigeoController;
 use App\Http\Controllers\Api\Users\AuthController;
 use App\Http\Controllers\Api\Users\UserController;
@@ -54,6 +55,7 @@ Route::controller(UbigeoController::class)->prefix('ubigeo')->group(function(){
     Route::get('distritos/{id}','distrits');
 });
 Route::apiResource('categories', CategoryController::class);
+Route::apiResource('products', ProductController::class);
 //Route::get('register', [RegisterController::class, 'register'])->name('api-v1.users.register');
 //
 Route::get('/new-password', function(){

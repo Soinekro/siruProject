@@ -32,10 +32,7 @@ class CategoryController extends Controller
         $request->merge([
             'slug' => Str::slug($request->name),
         ]);
-        DB::select('call spInsertCategory(?,?)', [
-            strtoupper($request->name),
-            $request->slug,
-        ]);
+        $category = Category::create($request->all());
 
         return response()->json([
             'message' => 'Categoria creada correctamente',
